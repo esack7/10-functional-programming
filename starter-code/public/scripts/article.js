@@ -69,12 +69,13 @@ Article.numWordsAll = () => {
 // DONE: Chain together a `map` and a `reduce` call to produce an array of unique author names. You will
 // probably need to use the optional accumulator argument in your reduce call.
 Article.allAuthors = () => {
-  return Article.all.map(ele => {return ele.author}).reduce((acc, val) => {
-    if(!acc.includes(val)){
-      acc.push(val);
-    }
-    return;
-  }, []);
+  return Article.all.map(ele => {
+    return ele.author}).reduce((acc, val) => {
+      if(!acc.includes(val)){
+        acc.push(val);
+      }
+      return;
+    }, []);
 };
 
 Article.numWordsByAuthor = () => {
