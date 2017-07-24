@@ -37,7 +37,7 @@ Article.prototype.toHtml = function() {
 Article.loadAll = rows => {
   rows.sort((a,b) => (new Date(b.publishedOn)) - (new Date(a.publishedOn)));
 
-  // TODO: Refactor this forEach code, by using a `.map` call instead, since what we are trying to accomplish
+  // DONE: Refactor this forEach code, by using a `.map` call instead, since what we are trying to accomplish
   // is the transformation of one collection into another. Remember that we can set variables equal to the result
   // of functions. So if we set a variable equal to the result of a .map, it will be our transformed array.
   // There is no need to push to anything.
@@ -47,7 +47,7 @@ Article.loadAll = rows => {
   Article.all.push(new Article(ele));
 });
 */
-
+  Article.all = rows.map(ele => new Article(ele));
 };
 
 Article.fetchAll = callback => {
@@ -60,26 +60,41 @@ Article.fetchAll = callback => {
   )
 };
 
-// TODO: Chain together a `map` and a `reduce` call to get a rough count of all words in all articles.
+// DONE: Chain together a `map` and a `reduce` call to get a rough count of all words in all articles.
 Article.numWordsAll = () => {
-  return Article.all.map().reduce()
+  Article.all.map(ele => {
+    return ele.body.split(' ').length}).reduce(( acc, cur ) => acc + cur);
 };
 
-// TODO: Chain together a `map` and a `reduce` call to produce an array of unique author names. You will
+// DONE: Chain together a `map` and a `reduce` call to produce an array of unique author names. You will
 // probably need to use the optional accumulator argument in your reduce call.
 Article.allAuthors = () => {
-  return Article.all.map().reduce();
+  return Article.all.map(ele => {return ele.author}).reduce((acc, val) => {
+    if(!acc.includes(val)){
+      acc.push(val);
+    }
+    return;
+  }, []);
 };
 
 Article.numWordsByAuthor = () => {
   return Article.allAuthors().map(author => {
-    // TODO: Transform each author string into an object with properties for
+    return {
+      name: author,
+      wordCount: Article.all.filter(function(article) {
+        return author === article.author
+      }).map(function(article) {
+        article.body.split(' ').length
+      }).reduce(( acc, cur ) => acc + cur)
+    }
+    // DONE: Transform each author string into an object with properties for
     // the author's name, as well as the total number of words across all articles
     // written by the specified author.
     // HINT: This .map should be setup to return an object literal with two properties.
     // The first property should be pretty straightforward, but you will need to chain
     // some combination of filter, map, and/or reduce to get the value for the second
     // property.
+
 
   })
 };
